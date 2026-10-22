@@ -20,14 +20,20 @@ abstract class BaseController
 
     abstract protected function delete(): void;
 
-    public function run(): void
+    /** @return array<string,string> method name => menu label */
+    protected function actions(): array
     {
-        $actions = [
+        return [
             'index' => 'List',
             'create' => 'Create',
             'edit' => 'Edit',
             'delete' => 'Delete',
         ];
+    }
+
+    public function run(): void
+    {
+        $actions = $this->actions();
 
         while (($choice = $this->choose($this->title(), $actions)) !== null) {
             $this->{$choice}();

@@ -19,6 +19,19 @@ class AuthorController extends BaseController
         return 'Authors';
     }
 
+    protected function actions(): array
+    {
+        return ['index' => 'List', 'show' => 'Show details'] + parent::actions();
+    }
+
+    protected function show(): void
+    {
+        $author = $this->pick();
+        if ($author !== null) {
+            $this->view->show($author->load('books.publisher'));
+        }
+    }
+
     protected function index(): void
     {
         $this->view->index(Author::withCount('books')->orderBy('name')->get());

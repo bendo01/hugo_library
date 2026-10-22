@@ -63,3 +63,10 @@ it('counts books per author', function () {
 
     expect(Author::withCount('books')->first()->books_count)->toBe(2);
 });
+
+it('loads an author with books and publishers for the detail view', function () {
+    $book = makeBook();
+    $author = Author::findOrFail($book->author_id)->load('books.publisher');
+
+    expect($author->books->first()->publisher->name)->toBe('Allen & Unwin');
+});

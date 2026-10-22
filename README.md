@@ -109,6 +109,49 @@ Navigate with the arrow keys and Enter. Each entity (Books, Authors, Publishers)
 supports List, Create, Edit and Delete. Deletes are soft deletes (`deleted_at`).
 An author or publisher that still has books cannot be deleted.
 
+## Viewing the data with sqlit
+
+[sqlit](https://github.com/Maxteabag/sqlit) is a terminal UI for SQL databases and is handy for
+browsing the tables (`authors`, `publishers`, `books`) outside the app.
+
+Install (needs Python 3.10+):
+
+```bash
+pipx install sqlit-tui        # or: uv tool install sqlit-tui / pip install sqlit-tui
+yay -S sqlit                  # Arch Linux (AUR)
+```
+
+**SQLite** (driver built in):
+
+```bash
+sqlit connect sqlite --file-path "database/hugo_library.sqlite"
+# or: sqlit sqlite:///path/to/hugo_library/database/hugo_library.sqlite
+```
+
+**PostgreSQL** (needs the `psycopg2-binary` driver: `pipx inject sqlit-tui psycopg2-binary`):
+
+```bash
+sqlit postgresql://bendo01:PASSWORD@127.0.0.1:5432/hugo_library
+```
+
+Save a connection once and reuse it:
+
+```bash
+sqlit connections add postgresql --name "HugoLibrary" --server "127.0.0.1" --username "bendo01" --password "PASSWORD" --database "hugo_library"
+sqlit -c "HugoLibrary"
+```
+
+Run a query without opening the UI (add `--format csv` or `--format json` for other output):
+
+```bash
+sqlit query -c "HugoLibrary" -q "SELECT b.title, b.book_year, a.name AS author, p.name AS publisher
+FROM books b JOIN authors a ON a.id = b.author_id JOIN publishers p ON p.id = b.publisher_id
+WHERE b.deleted_at IS NULL"
+```
+
+Soft-deleted rows stay in the tables, so filter with `deleted_at IS NULL` to see only active records.
+Keybindings are shown at the bottom of the sqlit screen.
+
 ## Testing
 
 Tests use [Pest](https://pestphp.com) and run against an in-memory SQLite database
