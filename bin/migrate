@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$base = dirname(__DIR__);
+require $base . '/vendor/autoload.php';
+
+use Bendo01\HugoLibrary\Database\Database;
+use Bendo01\HugoLibrary\Database\Migrator;
+
+Database::boot($base);
+$migrator = new Migrator($base . '/database/migrations');
+
+$rollback = ($argv[1] ?? '') === 'rollback';
+$done = $rollback ? $migrator->rollback() : $migrator->migrate();
+
+if ($done === []) {
+    echo $rollback ? "Nothing to roll back.\n" : "Nothing to migrate.\n";
+}
+foreach ($done as $name) {
+    echo ($rollback ? 'Rolled back: ' : 'Migrated: ') . $name . "\n";
+}

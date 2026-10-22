@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$base = dirname(__DIR__);
+require $base . '/vendor/autoload.php';
+
+use Bendo01\HugoLibrary\Controllers\MenuController;
+use Bendo01\HugoLibrary\Database\Database;
+
+Database::boot($base);
+(new MenuController())->run();

@@ -1,0 +1,51 @@
+{
+    "name": "bendo01/hugo_library",
+    "autoload": {
+        "psr-4": {
+            "Bendo01\\HugoLibrary\\Models\\": "src/models/",
+            "Bendo01\\HugoLibrary\\Controllers\\": "src/controllers/",
+            "Bendo01\\HugoLibrary\\Views\\": "src/views/",
+            "Bendo01\\HugoLibrary\\Database\\": "src/database/",
+            "Bendo01\\HugoLibrary\\Seeders\\": "database/seeders/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Benny L.E.P",
+            "email": "bendo01@gmail.com"
+        }
+    ],
+    "require": {
+        "nunomaduro/laravel-console-menu": "^3.7",
+        "illuminate/database": "^13.38",
+        "illuminate/events": "^13.38",
+        "vlucas/phpdotenv": "^5.7",
+        "ramsey/uuid": "^4.9",
+        "php": "^8.5",
+        "xefi/faker-php": "^1.5",
+        "xefi/faker-php-locales-en-us": "^1.0"
+    },
+    "bin": [
+        "bin/library",
+        "bin/migrate",
+        "bin/seed"
+    ],
+    "scripts": {
+        "migrate": "@php bin/migrate",
+        "rollback": "@php bin/migrate rollback",
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php bin/library"
+        ],
+        "test": "pest",
+        "seed": "@php bin/seed"
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
